@@ -23,7 +23,7 @@ public class MemberService {
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(rawPassword);
         // Member 객체 생성 (암호화된 비밀번호로)
-        Member member = new Member(email, bussinessName, phone, encodedPassword);
+        Member member = new Member(email, encodedPassword, bussinessName, phone);
         // 저장
         Member savedMember = memberRepository.save(member);
         // 저장된 member id 반환

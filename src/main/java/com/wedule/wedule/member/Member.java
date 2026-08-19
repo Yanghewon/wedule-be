@@ -7,7 +7,7 @@ import lombok.Getter;
 // member 테이블과 매핑됨
 @Getter
 @Entity
-@Table(name = "mamber")
+@Table(name = "member")
 public class Member {
 
     // 기본키(PK)
@@ -15,6 +15,10 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // 업체명(작가명) - 필수
+    @Column(nullable = false)
+    private String businessName;
 
     // 로그인 계정으로 쓰이는 이메일
     // nullable = false: 필수값
@@ -25,10 +29,6 @@ public class Member {
     // 암호화된 비밀번호 저장
     @Column(nullable = false)
     private String password;
-
-    // 업체명(작가명) - 필수
-    @Column(nullable = false)
-    private String businessName;
 
     // 연락처 - 선택 입력이라 별도 제약 없음
     private String phone;
@@ -41,9 +41,9 @@ public class Member {
     // 실제로 Member를 생성할 때 사용하는 생성자
     // 필수 정보를 모두 받아야만 객체가 만들어지도록 강제
     public Member(String email, String password, String businessName, String phone) {
+        this.businessName = businessName;
         this.email = email;
         this.password = password;
-        this.businessName = businessName;
         this.phone = phone;
     }
 

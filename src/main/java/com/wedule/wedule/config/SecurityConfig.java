@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // Spring Security의 전역 보안 설정을 담당하는 클래스
 @Configuration
@@ -24,13 +25,18 @@ public class SecurityConfig {
     // 지금 단계에서는 회원가입/로그인 API는 인증 없이 접근 가능하도록 임시로 허용
     // JWT 인증을 실제로 붙이는 시점에 이 부분을 다시 손볼 예정
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()
-                );
+                .authorizeHttpRequests(auth -> auth
+                        // 회원가입, 로그인은 인증 없이 접근 가능
+                        .requestMatchers("/api/members/signup", "/api/auth/login").permitAll()
+                        // 나머지 모든 요청은 인증 필요
+                        .anyRequest().authenticated()
+                )
+                // 우리가 만든 JWT 필터를 Spring Security 기본 필터보다 먼저 실행되도록 등록
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
-
 }
