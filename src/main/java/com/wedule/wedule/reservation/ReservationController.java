@@ -62,7 +62,7 @@ public class ReservationController {
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         reservationService.updateStatus(memberId, id, request);
-        return ResponseEntity.ok(new MessageResponse("예약 상태가 변경되었습니다."));
+        return ResponseEntity.ok(new MessageResponse("예약 상태가 변경되었습니다🤍"));
     }
 
     // DELETE /api/reservations/{id} — 예약 삭제
@@ -73,6 +73,6 @@ public class ReservationController {
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         reservationService.deleteReservation(memberId, id);
-        return ResponseEntity.ok(new MessageResponse("예약이 삭제되었습니다."));
+        return ResponseEntity.ok(new MessageResponse("예약이 삭제되었습니다🤍"));
     }
 }
