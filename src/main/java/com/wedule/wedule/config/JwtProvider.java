@@ -40,15 +40,13 @@ public class JwtProvider {
 
     // 토큰이 유효한지 검증(서명이 맞는지, 만료되지 않았는지)
     public boolean validateToken(String token) {
-        // 토큰을 열어서 해석
         try {
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
                     .parseSignedClaims(token);
             return true;
-        }  catch (JwtException | IllegalArgumentException e) {
-            // 안 맞거나 만료 시간이 지났으면 자동으로 예외를 던짐
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
