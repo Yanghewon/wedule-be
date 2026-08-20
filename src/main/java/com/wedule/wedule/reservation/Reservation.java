@@ -1,6 +1,7 @@
 package com.wedule.wedule.reservation;
 
 import com.wedule.wedule.member.Member;
+import com.wedule.wedule.packages.Package;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -36,6 +37,11 @@ public class Reservation {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    // 이 예약에서 선택한 촬영 패키지
+    // Reservation N : 1 Package 관계 (여러 예약이 같은 패키지를 선택할 수 있음)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_id", nullable = false)
+    private Package packageInfo;
     // 신랑 이름
     @Column(nullable = false)
     private String groomName;
@@ -78,8 +84,10 @@ public class Reservation {
 
     // 예약을 실제로 생성할 때 사용하는 생성자
     // 새로 생성되는 예약은 항상 "문의(INQUIRY)" 상태로 시작한다고 가정하고 고정해둠
-    public Reservation(Member member, String groomName, String brideName, String phone, LocalDate weddingDate, LocalTime weddingTime, String venueName) {
+    public Reservation(Member member, Package packageInfo, String groomName, String brideName, String phone,
+                       LocalDate weddingDate, LocalTime weddingTime, String venueName) {
         this.member = member;
+        this.packageInfo = packageInfo;
         this.groomName = groomName;
         this.brideName = brideName;
         this.phone = phone;
@@ -101,6 +109,8 @@ public class Reservation {
     public Member getMember() {
         return member;
     }
+
+    public Package getPackageInfo() { return packageInfo; }
 
     public String getGroomName() {
         return groomName;

@@ -2,6 +2,7 @@ package com.wedule.wedule.reservation;
 
 import com.wedule.wedule.common.dto.MessageResponse;
 import com.wedule.wedule.reservation.dto.ReservationCreateRequest;
+import com.wedule.wedule.reservation.dto.ReservationCreateResponse;
 import com.wedule.wedule.reservation.dto.ReservationResponse;
 import com.wedule.wedule.reservation.dto.ReservationStatusUpdateRequest;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ReservationController {
     // Authentication 파라미터: Spring Security가 자동으로 "지금 이 요청을 보낸 인증된 사용자 정보"를 넣어줌
     // (JwtAuthenticationFilter가 SecurityContextHolder에 등록해둔 바로 그 정보)
     @PostMapping
-    public ResponseEntity<Long> createReservation(
+    public ResponseEntity<ReservationCreateResponse> createReservation(
             Authentication authentication,
             @RequestBody ReservationCreateRequest request
     ) {
@@ -32,7 +33,7 @@ public class ReservationController {
         Long memberId = (Long) authentication.getPrincipal();
 
         Long reservationId = reservationService.createReservation(memberId, request);
-        return ResponseEntity.ok(reservationId);
+        return ResponseEntity.ok(new ReservationCreateResponse(reservationId, "예약이 완료되었습니다🤍"));
     }
 
     // GET /api/reservations — 로그인한 회원의 예약 목록 조회

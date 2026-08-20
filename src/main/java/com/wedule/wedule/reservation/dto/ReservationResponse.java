@@ -11,6 +11,7 @@ import java.time.LocalTime;
 public class ReservationResponse {
 
     private Long id;
+    private String packageName;
     private String groomName;
     private String brideName;
     private String phone;
@@ -23,6 +24,7 @@ public class ReservationResponse {
     // Controller/Service에서 매번 필드를 하나씩 옮겨 담지 않고, 이 생성자 하나로 변환 가능
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
+        this.packageName = reservation.getPackageInfo().getName();
         this.groomName = reservation.getGroomName();
         this.brideName = reservation.getBrideName();
         this.phone = reservation.getPhone();
@@ -33,6 +35,9 @@ public class ReservationResponse {
     }
 
     public Long getId() { return id; }
+    public String getPackageName() {
+        return packageName;
+    }
     public String getGroomName() { return groomName; }
     public String getBrideName() { return brideName; }
     public String getPhone() { return phone; }

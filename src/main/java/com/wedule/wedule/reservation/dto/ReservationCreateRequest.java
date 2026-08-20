@@ -8,6 +8,7 @@ import java.time.LocalTime;
 // Jackson이 이 필드들에 자동으로 값을 채워줌
 public class ReservationCreateRequest {
 
+    private Long packageId;
     private String groomName;
     private String brideName;
     private String phone;
@@ -27,6 +28,14 @@ public class ReservationCreateRequest {
         this.weddingDate = weddingDate;
         this.weddingTime = weddingTime;
         this.venueName = venueName;
+    }
+
+    public Long getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(Long packageId) {
+        this.packageId = packageId;
     }
 
     public String getGroomName() {

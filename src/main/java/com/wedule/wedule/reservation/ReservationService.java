@@ -2,6 +2,8 @@ package com.wedule.wedule.reservation;
 
 import com.wedule.wedule.member.Member;
 import com.wedule.wedule.member.MemberRepository;
+import com.wedule.wedule.packages.Package;
+import com.wedule.wedule.packages.PackageRepository;
 import com.wedule.wedule.reservation.dto.ReservationCreateRequest;
 import com.wedule.wedule.reservation.dto.ReservationResponse;
 import com.wedule.wedule.reservation.dto.ReservationStatusUpdateRequest;
@@ -17,10 +19,12 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final MemberRepository memberRepository;
+    private final PackageRepository packageRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, MemberRepository memberRepository) {
+    public ReservationService(ReservationRepository reservationRepository, MemberRepository memberRepository, PackageRepository packageRepository) {
         this.reservationRepository = reservationRepository;
         this.memberRepository = memberRepository;
+        this.packageRepository = packageRepository;
     }
 
     // memberId: 로그인한 업체의 id (JWT 필터가 인증 정보에 등록해둔 값에서 나중에 꺼내올 예정)
@@ -32,7 +36,12 @@ public class ReservationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 업체입니다."));
 
-        // 2. 1차 방어: 애플리케이션 레벨에서 같은 날짜/시간 예약이 이미 있는지 미리 확인
+        // 2. 선택한 패키지가 실제 존재하는지 확인 후 엔티티로 조회
+        Package packageInfo = packageRepository.findById(request.getPackageId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 패키지입니다."));
+
+
+        // 3. 1차 방어: 애플리케이션 레벨에서 같은 날짜/시간 예약이 이미 있는지 미리 확인
         //    대부분의 경우 여기서 걸러지고, 사용자에게 빠르고 친절한 에러 메시지를 줄 수 있음
         if (reservationRepository.existsByMemberIdAndWeddingDateAndWeddingTime(
                 memberId, request.getWeddingDate(), request.getWeddingTime())) {
@@ -43,6 +52,7 @@ public class ReservationService {
         //    DTO에서 필요한 값들을 이름으로 하나씩 꺼내 쓰므로, 순서를 헷갈릴 위험이 없음
         Reservation reservation = new Reservation(
                 member,
+                packageInfo,
                 request.getGroomName(),
                 request.getBrideName(),
                 request.getPhone(),
