@@ -5,9 +5,9 @@ import com.wedule.wedule.reservation.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 // 예약 조회 응답 DTO
-// Reservation 엔티티를 그대로 반환하지 않고 필요한 정보만 골라서 내려줌
 public class ReservationResponse {
 
     private Long id;
@@ -19,10 +19,11 @@ public class ReservationResponse {
     private LocalTime weddingTime;
     private String venueName;
     private ReservationStatus status;
+    private List<String> optionNames;
 
-    // Reservation 엔티티를 받아서 응답 DTO로 변환하는 생성자
-    // Controller/Service에서 매번 필드를 하나씩 옮겨 담지 않고, 이 생성자 하나로 변환 가능
-    public ReservationResponse(Reservation reservation) {
+    // Reservation 엔티티와, 별도로 조회한 옵션 이름 목록을 함께 받아서 응답 DTO로 변환
+    // (Reservation 엔티티 자체에는 옵션 이름 목록이 없어서, Service에서 따로 조회해 넘겨받아야 함)
+    public ReservationResponse(Reservation reservation, List<String> optionNames) {
         this.id = reservation.getId();
         this.packageName = reservation.getPackageInfo().getName();
         this.groomName = reservation.getGroomName();
@@ -32,12 +33,11 @@ public class ReservationResponse {
         this.weddingTime = reservation.getWeddingTime();
         this.venueName = reservation.getVenueName();
         this.status = reservation.getStatus();
+        this.optionNames = optionNames;
     }
 
     public Long getId() { return id; }
-    public String getPackageName() {
-        return packageName;
-    }
+    public String getPackageName() { return packageName; }
     public String getGroomName() { return groomName; }
     public String getBrideName() { return brideName; }
     public String getPhone() { return phone; }
@@ -45,4 +45,5 @@ public class ReservationResponse {
     public LocalTime getWeddingTime() { return weddingTime; }
     public String getVenueName() { return venueName; }
     public ReservationStatus getStatus() { return status; }
+    public List<String> getOptionNames() { return optionNames; }
 }
