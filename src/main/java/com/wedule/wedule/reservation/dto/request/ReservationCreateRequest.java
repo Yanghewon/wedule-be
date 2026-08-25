@@ -2,6 +2,7 @@ package com.wedule.wedule.reservation.dto.request;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import com.wedule.wedule.reservation.dto.request.CustomFieldValueRequest;
 import java.util.List;
 
 // 예약 생성 요청 DTO
@@ -17,6 +18,7 @@ public class ReservationCreateRequest {
     private LocalTime weddingTime;
     private String venueName;
     private List<Long> optionIds;
+    private List<CustomFieldValueRequest> customFieldValues;
 
     // Jackson이 JSON -> 객체 변환 시 필요로 하는 기본 생성자
     public ReservationCreateRequest() {
@@ -71,4 +73,13 @@ public class ReservationCreateRequest {
     public void setOptionIds(List<Long> optionIds) {
         this.optionIds = optionIds;
     }
+
+    public List<CustomFieldValueRequest> getCustomFieldValues() {
+        return customFieldValues;
+    }
+
+    public void setCustomFieldValues(List<CustomFieldValueRequest> customFieldValues) {
+        this.customFieldValues = customFieldValues;
+    }
+
 }

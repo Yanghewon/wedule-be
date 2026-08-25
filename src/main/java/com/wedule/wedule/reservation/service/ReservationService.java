@@ -6,11 +6,17 @@ import com.wedule.wedule.option.entity.Option;
 import com.wedule.wedule.option.repository.OptionRepository;
 import com.wedule.wedule.packages.Package;
 import com.wedule.wedule.packages.PackageRepository;
+import com.wedule.wedule.reservation.dto.request.CustomFieldValueRequest;
+import com.wedule.wedule.reservation.dto.response.CustomFieldValueResponse;
+import com.wedule.wedule.reservation.entity.CustomField;
+import com.wedule.wedule.reservation.entity.CustomFieldValue;
 import com.wedule.wedule.reservation.entity.ReservationOption;
 import com.wedule.wedule.reservation.dto.request.ReservationCreateRequest;
 import com.wedule.wedule.reservation.dto.response.ReservationResponse;
 import com.wedule.wedule.reservation.dto.request.ReservationStatusUpdateRequest;
 import com.wedule.wedule.reservation.entity.Reservation;
+import com.wedule.wedule.reservation.repository.CustomFieldRepository;
+import com.wedule.wedule.reservation.repository.CustomFieldValueRepository;
 import com.wedule.wedule.reservation.repository.ReservationOptionRepository;
 import com.wedule.wedule.reservation.repository.ReservationRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,15 +34,21 @@ public class ReservationService {
     private final PackageRepository packageRepository;
     private final OptionRepository optionRepository;
     private final ReservationOptionRepository reservationOptionRepository;
+    private final CustomFieldValueRepository customFieldValueRepository;
+    private final CustomFieldRepository customFieldRepository;
 
     public ReservationService(ReservationRepository reservationRepository, MemberRepository memberRepository,
                               PackageRepository packageRepository, OptionRepository optionRepository,
-                              ReservationOptionRepository reservationOptionRepository) {
+                              ReservationOptionRepository reservationOptionRepository,
+                              CustomFieldValueRepository customFieldValueRepository,
+                              CustomFieldRepository customFieldRepository) {
         this.reservationRepository = reservationRepository;
         this.memberRepository = memberRepository;
         this.packageRepository = packageRepository;
         this.optionRepository = optionRepository;
         this.reservationOptionRepository = reservationOptionRepository;
+        this.customFieldValueRepository = customFieldValueRepository;
+        this.customFieldRepository = customFieldRepository;
     }
 
     @Transactional
@@ -86,6 +98,16 @@ public class ReservationService {
             }
         }
 
+        if (request.getCustomFieldValues() != null) {
+            for (CustomFieldValueRequest cfvRequest : request.getCustomFieldValues()) {
+                CustomField customField = customFieldRepository.findById(cfvRequest.getCustomFieldId())
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 항목입니다."));
+                customFieldValueRepository.save(
+                        new CustomFieldValue(savedReservation, customField, cfvRequest.getValue())
+                );
+            }
+        }
+
         // 7. 모든 처리가 끝난 후 최종적으로 id 반환
         return savedReservation.getId();
     }
@@ -110,7 +132,12 @@ public class ReservationService {
         List<String> optionNames = reservationOptionRepository.findByReservationId(reservation.getId()).stream()
                 .map(ro -> ro.getOption().getName())
                 .collect(Collectors.toList());
-        return new ReservationResponse(reservation, optionNames);
+
+        List<CustomFieldValueResponse> customFieldValues = customFieldValueRepository.findByReservationId(reservation.getId()).stream()
+                .map(cfv -> new CustomFieldValueResponse(cfv.getCustomField().getLabel(), cfv.getValue()))
+                .collect(Collectors.toList());
+
+        return new ReservationResponse(reservation, optionNames, customFieldValues);
     }
 
     // 예약 상태 변경

@@ -20,10 +20,11 @@ public class ReservationResponse {
     private String venueName;
     private ReservationStatus status;
     private List<String> optionNames;
+    private List<CustomFieldValueResponse> customFieldValues;
 
     // Reservation 엔티티와, 별도로 조회한 옵션 이름 목록을 함께 받아서 응답 DTO로 변환
     // (Reservation 엔티티 자체에는 옵션 이름 목록이 없어서, Service에서 따로 조회해 넘겨받아야 함)
-    public ReservationResponse(Reservation reservation, List<String> optionNames) {
+    public ReservationResponse(Reservation reservation, List<String> optionNames, List<CustomFieldValueResponse> customFieldValues) {
         this.id = reservation.getId();
         this.packageName = reservation.getPackageInfo().getName();
         this.groomName = reservation.getGroomName();
@@ -34,6 +35,7 @@ public class ReservationResponse {
         this.venueName = reservation.getVenueName();
         this.status = reservation.getStatus();
         this.optionNames = optionNames;
+        this.customFieldValues = customFieldValues;
     }
 
     public Long getId() { return id; }
@@ -46,4 +48,5 @@ public class ReservationResponse {
     public String getVenueName() { return venueName; }
     public ReservationStatus getStatus() { return status; }
     public List<String> getOptionNames() { return optionNames; }
+    public List<CustomFieldValueResponse> getCustomFieldValues() {return customFieldValues;}
 }
