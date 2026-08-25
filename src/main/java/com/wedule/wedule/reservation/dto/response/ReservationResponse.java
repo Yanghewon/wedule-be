@@ -1,7 +1,7 @@
-package com.wedule.wedule.reservation.dto;
+package com.wedule.wedule.reservation.dto.response;
 
-import com.wedule.wedule.reservation.Reservation;
-import com.wedule.wedule.reservation.ReservationStatus;
+import com.wedule.wedule.reservation.dto.ReservationStatus;
+import com.wedule.wedule.reservation.entity.Reservation;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

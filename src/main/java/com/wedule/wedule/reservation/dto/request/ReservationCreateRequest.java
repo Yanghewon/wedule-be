@@ -1,4 +1,4 @@
-package com.wedule.wedule.reservation.dto;
+package com.wedule.wedule.reservation.dto.request;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

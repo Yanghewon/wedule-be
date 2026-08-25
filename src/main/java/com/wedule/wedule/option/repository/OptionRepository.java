@@ -1,5 +1,6 @@
-package com.wedule.wedule.option;
+package com.wedule.wedule.option.repository;
 
+import com.wedule.wedule.option.entity.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

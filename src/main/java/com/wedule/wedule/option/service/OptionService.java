@@ -1,10 +1,12 @@
-package com.wedule.wedule.option;
+package com.wedule.wedule.option.service;
 
 import com.wedule.wedule.member.Member;
 import com.wedule.wedule.member.MemberRepository;
+import com.wedule.wedule.option.entity.Option;
 import com.wedule.wedule.option.dto.OptionCreateRequest;
 import com.wedule.wedule.option.dto.OptionResponse;
 import com.wedule.wedule.option.dto.OptionUpdateRequest;
+import com.wedule.wedule.option.repository.OptionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

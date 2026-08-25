@@ -1,5 +1,6 @@
-package com.wedule.wedule.reservation;
+package com.wedule.wedule.reservation.repository;
 
+import com.wedule.wedule.reservation.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

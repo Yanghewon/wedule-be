@@ -1,4 +1,4 @@
-package com.wedule.wedule.reservation.dto;
+package com.wedule.wedule.reservation.dto.response;
 
 // 예약 생성 성공 응답
 public class ReservationCreateResponse {

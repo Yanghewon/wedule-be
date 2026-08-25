@@ -1,6 +1,6 @@
-package com.wedule.wedule.reservation;
+package com.wedule.wedule.reservation.entity;
 
-import com.wedule.wedule.option.Option;
+import com.wedule.wedule.option.entity.Option;
 import jakarta.persistence.*;
 
 // 예약과 옵션의 N:M 관계를 표현하는 연결 엔티티

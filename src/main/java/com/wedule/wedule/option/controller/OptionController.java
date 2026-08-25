@@ -1,6 +1,7 @@
-package com.wedule.wedule.option;
+package com.wedule.wedule.option.controller;
 
 import com.wedule.wedule.common.dto.MessageResponse;
+import com.wedule.wedule.option.service.OptionService;
 import com.wedule.wedule.option.dto.OptionCreateRequest;
 import com.wedule.wedule.option.dto.OptionCreateResponse;
 import com.wedule.wedule.option.dto.OptionResponse;

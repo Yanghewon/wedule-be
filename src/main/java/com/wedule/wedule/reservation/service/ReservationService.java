@@ -1,14 +1,18 @@
-package com.wedule.wedule.reservation;
+package com.wedule.wedule.reservation.service;
 
 import com.wedule.wedule.member.Member;
 import com.wedule.wedule.member.MemberRepository;
-import com.wedule.wedule.option.Option;
-import com.wedule.wedule.option.OptionRepository;
+import com.wedule.wedule.option.entity.Option;
+import com.wedule.wedule.option.repository.OptionRepository;
 import com.wedule.wedule.packages.Package;
 import com.wedule.wedule.packages.PackageRepository;
-import com.wedule.wedule.reservation.dto.ReservationCreateRequest;
-import com.wedule.wedule.reservation.dto.ReservationResponse;
-import com.wedule.wedule.reservation.dto.ReservationStatusUpdateRequest;
+import com.wedule.wedule.reservation.entity.ReservationOption;
+import com.wedule.wedule.reservation.dto.request.ReservationCreateRequest;
+import com.wedule.wedule.reservation.dto.response.ReservationResponse;
+import com.wedule.wedule.reservation.dto.request.ReservationStatusUpdateRequest;
+import com.wedule.wedule.reservation.entity.Reservation;
+import com.wedule.wedule.reservation.repository.ReservationOptionRepository;
+import com.wedule.wedule.reservation.repository.ReservationRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

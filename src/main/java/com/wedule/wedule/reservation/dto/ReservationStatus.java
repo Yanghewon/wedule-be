@@ -1,4 +1,4 @@
-package com.wedule.wedule.reservation;
+package com.wedule.wedule.reservation.dto;
 
 // 예약이 진행되는 단계를 나타내는 상태값
 // enum으로 만든 이유: 상태값을 String으로 관리하면 오타("계약완료" vs "계약완로")가 나도

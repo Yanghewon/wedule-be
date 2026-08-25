@@ -1,6 +1,7 @@
-package com.wedule.wedule.option;
+package com.wedule.wedule.option.entity;
 
 import com.wedule.wedule.member.Member;
+import com.wedule.wedule.option.OptionType;
 import jakarta.persistence.*;
 
 // 추가 옵션 / 할인 옵션 엔티티

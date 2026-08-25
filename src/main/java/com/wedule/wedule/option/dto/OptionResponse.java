@@ -1,6 +1,6 @@
 package com.wedule.wedule.option.dto;
 
-import com.wedule.wedule.option.Option;
+import com.wedule.wedule.option.entity.Option;
 import com.wedule.wedule.option.OptionType;
 
 // 옵션 조회 응답 DTO

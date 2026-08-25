@@ -1,7 +1,8 @@
-package com.wedule.wedule.reservation;
+package com.wedule.wedule.reservation.entity;
 
 import com.wedule.wedule.member.Member;
 import com.wedule.wedule.packages.Package;
+import com.wedule.wedule.reservation.dto.ReservationStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
