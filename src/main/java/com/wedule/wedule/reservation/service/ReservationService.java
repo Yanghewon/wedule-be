@@ -6,23 +6,19 @@ import com.wedule.wedule.option.entity.Option;
 import com.wedule.wedule.option.repository.OptionRepository;
 import com.wedule.wedule.packages.Package;
 import com.wedule.wedule.packages.PackageRepository;
+import com.wedule.wedule.reservation.dto.ReservationStatus;
 import com.wedule.wedule.reservation.dto.request.CustomFieldValueRequest;
 import com.wedule.wedule.reservation.dto.response.CustomFieldValueResponse;
-import com.wedule.wedule.reservation.entity.CustomField;
-import com.wedule.wedule.reservation.entity.CustomFieldValue;
-import com.wedule.wedule.reservation.entity.ReservationOption;
+import com.wedule.wedule.reservation.entity.*;
 import com.wedule.wedule.reservation.dto.request.ReservationCreateRequest;
 import com.wedule.wedule.reservation.dto.response.ReservationResponse;
 import com.wedule.wedule.reservation.dto.request.ReservationStatusUpdateRequest;
-import com.wedule.wedule.reservation.entity.Reservation;
-import com.wedule.wedule.reservation.repository.CustomFieldRepository;
-import com.wedule.wedule.reservation.repository.CustomFieldValueRepository;
-import com.wedule.wedule.reservation.repository.ReservationOptionRepository;
-import com.wedule.wedule.reservation.repository.ReservationRepository;
+import com.wedule.wedule.reservation.repository.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,12 +32,14 @@ public class ReservationService {
     private final ReservationOptionRepository reservationOptionRepository;
     private final CustomFieldValueRepository customFieldValueRepository;
     private final CustomFieldRepository customFieldRepository;
+    private final CalendarEventRepository calendarEventRepository;
 
     public ReservationService(ReservationRepository reservationRepository, MemberRepository memberRepository,
                               PackageRepository packageRepository, OptionRepository optionRepository,
                               ReservationOptionRepository reservationOptionRepository,
                               CustomFieldValueRepository customFieldValueRepository,
-                              CustomFieldRepository customFieldRepository) {
+                              CustomFieldRepository customFieldRepository,
+                              CalendarEventRepository calendarEventRepository) {
         this.reservationRepository = reservationRepository;
         this.memberRepository = memberRepository;
         this.packageRepository = packageRepository;
@@ -49,6 +47,7 @@ public class ReservationService {
         this.reservationOptionRepository = reservationOptionRepository;
         this.customFieldValueRepository = customFieldValueRepository;
         this.customFieldRepository = customFieldRepository;
+        this.calendarEventRepository = calendarEventRepository;
     }
 
     @Transactional
@@ -145,6 +144,21 @@ public class ReservationService {
     public void updateStatus(Long memberId, Long reservationId, ReservationStatusUpdateRequest request) {
         Reservation reservation = findOwnedReservation(memberId, reservationId);
         reservation.changeStatus(request.getStatus());
+
+        // 계약완료 상태로 바뀌는 경우, 캘린더 일정을 자동 생성
+        // (이미 일정이 생성되어 있으면 중복 생성하지 않도록 확인)
+        if (request.getStatus() == ReservationStatus.CONTRACTED
+                && calendarEventRepository.findByReservationId(reservation.getId()).isEmpty()) {
+
+            String title = String.format("%s / %s / %s",
+                    reservation.getBrideName(),
+                    reservation.getVenueName(),
+                    reservation.getWeddingTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+
+            calendarEventRepository.save(
+                    new CalendarEvent(reservation, title, reservation.getWeddingDate())
+            );
+        }
     }
 
     // 예약 삭제
