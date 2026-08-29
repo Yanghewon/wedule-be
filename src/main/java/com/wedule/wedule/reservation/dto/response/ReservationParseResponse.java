@@ -2,6 +2,7 @@ package com.wedule.wedule.reservation.dto.response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 // 예약 양식 텍스트 파싱 결과를 담는 DTO
 // 실제로 저장된 데이터가 아니라 "미리보기" 값이므로,
@@ -15,6 +16,7 @@ public class ReservationParseResponse {
     private LocalDate weddingDate;
     private LocalTime weddingTime;
     private String venueName;
+    private List<ParsedCustomFieldResponse> customFieldValues;
 
     public ReservationParseResponse() {
     }
@@ -65,5 +67,13 @@ public class ReservationParseResponse {
 
     public void setVenueName(String venueName) {
         this.venueName = venueName;
+    }
+
+    public List<ParsedCustomFieldResponse> getCustomFieldValues() {
+        return customFieldValues;
+    }
+
+    public void setCustomFieldValues(List<ParsedCustomFieldResponse> customFieldValues) {
+        this.customFieldValues = customFieldValues;
     }
 }

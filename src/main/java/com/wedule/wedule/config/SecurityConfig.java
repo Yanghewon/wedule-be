@@ -8,11 +8,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
+
 
 // Spring Security의 전역 보안 설정을 담당하는 클래스
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    // 프론트엔드(localhost:5173)에서 백엔드(localhost:8080)로 보내는 요청을
+    // 브라우저가 차단하지 않도록 허용하는 설정
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
+        config.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 
     // 비밀번호를 암호화/검증할 때 사용할 인코더 Bean으로 등록
     // BCrypt: 같은 비밀번호를 넣어도 매번 다른 암호화 결과가 나오는 단방향 해시 알고리즘
@@ -27,14 +45,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // 회원가입, 로그인은 인증 없이 접근 가능
                         .requestMatchers("/api/members/signup", "/api/auth/login").permitAll()
-                        // 나머지 모든 요청은 인증 필요
                         .anyRequest().authenticated()
                 )
-                // 우리가 만든 JWT 필터를 Spring Security 기본 필터보다 먼저 실행되도록 등록
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

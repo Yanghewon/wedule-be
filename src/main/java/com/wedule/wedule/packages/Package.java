@@ -44,7 +44,7 @@ public class Package {
     // 예: "원본 전체 전달, 액자 1개, 앨범 1개, USB 1개"
     // 항목이 정해진 개수가 아니고 단순 표시용 정보라 자유 텍스트로 저장
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String composition;
 
     // JPA가 프록시 객체를 생성할 때 필요로 하는 기본 생성자

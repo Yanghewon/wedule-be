@@ -165,6 +165,17 @@ public class ReservationService {
     @Transactional
     public void deleteReservation(Long memberId, Long reservationId) {
         Reservation reservation = findOwnedReservation(memberId, reservationId);
+
+        // 이 예약을 참조하는 연관 데이터들을 먼저 삭제 (외래키 제약 때문에 순서가 중요함)
+        calendarEventRepository.findByReservationId(reservationId)
+                .ifPresent(calendarEventRepository::delete);
+
+        reservationOptionRepository.findByReservationId(reservationId)
+                .forEach(reservationOptionRepository::delete);
+
+        customFieldValueRepository.findByReservationId(reservationId)
+                .forEach(customFieldValueRepository::delete);
+
         reservationRepository.delete(reservation);
     }
 
