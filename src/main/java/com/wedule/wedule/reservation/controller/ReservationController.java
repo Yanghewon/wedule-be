@@ -75,6 +75,6 @@ public class ReservationController {
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         reservationService.deleteReservation(memberId, id);
-        return ResponseEntity.ok(new MessageResponse("예약이 삭제되었습니다🤍"));
+        return ResponseEntity.ok(new MessageResponse("예약이 삭제되었습니다."));
     }
 }

@@ -49,7 +49,7 @@ public class CustomFieldController {
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         customFieldService.updateCustomField(memberId, id, request);
-        return ResponseEntity.ok(new MessageResponse("항목이 수정되었습니다."));
+        return ResponseEntity.ok(new MessageResponse("항목이 수정되었습니다🤍"));
     }
 
     // DELETE /api/custom-fields/{id} — 커스텀 항목 삭제

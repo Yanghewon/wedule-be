@@ -36,6 +36,6 @@ public class CalendarEventController {
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         calendarEventService.updateTitle(memberId, id, request);
-        return ResponseEntity.ok(new MessageResponse("일정 제목이 수정되었습니다."));
+        return ResponseEntity.ok(new MessageResponse("일정 제목이 수정되었습니다🤍"));
     }
 }
