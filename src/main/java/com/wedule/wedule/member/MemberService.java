@@ -1,5 +1,6 @@
 package com.wedule.wedule.member;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,12 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
         // 저장된 member id 반환
         return savedMember.getId();
+    }
+
+    @Transactional
+    public void uploadSignature(Long memberId, byte[] signatureImage) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        member.updateSignature(signatureImage);
     }
 }

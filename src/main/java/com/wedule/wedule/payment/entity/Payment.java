@@ -17,7 +17,7 @@ public class Payment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id, nullable = false")
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
 
     @Enumerated(EnumType.STRING)

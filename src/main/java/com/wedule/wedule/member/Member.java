@@ -33,6 +33,11 @@ public class Member {
     // 연락처 - 선택 입력이라 별도 제약 없음
     private String phone;
 
+    // 계약서에 들어갈 작가 사인 이미지 (프로필에 한 번 등록해두고 모든 계약서에 재사용)
+    // 파일을 서버 디스크에 따로 저장하지 않고, 이미지 바이트 자체를 DB에 저장
+    @Lob
+    private byte[] signatureImage;
+
     // JPA가 프록시 객체를 생성할 때 리플렉션으로 호출하는 기본 생성자
     // public으로 열면 누구나 빈 값 Member를 만들 수 있어 위험하므로 protected로 제한
     protected Member() {
@@ -45,6 +50,11 @@ public class Member {
         this.email = email;
         this.password = password;
         this.phone = phone;
+    }
+
+    // 사인 이미지 등록/변경
+    public void updateSignature(byte[] signatureImage) {
+        this.signatureImage = signatureImage;
     }
 
     // Setter는 의도적으로 만들지 않음
@@ -68,4 +78,6 @@ public class Member {
     public String getPhone() {
         return phone;
     }
+
+    public byte[] getSignatureImage() { return signatureImage; }
 }
