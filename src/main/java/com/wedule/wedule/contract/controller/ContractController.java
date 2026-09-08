@@ -4,6 +4,7 @@ import com.wedule.wedule.contract.dto.request.ContractCreateRequest;
 import com.wedule.wedule.contract.dto.response.ContractDetailResponse;
 import com.wedule.wedule.contract.dto.response.ContractResponse;
 import com.wedule.wedule.contract.service.ContractService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ContractController {
     public ResponseEntity<ContractResponse> createOrUpdateContract(
             Authentication authentication,
             @PathVariable Long reservationId,
-            @RequestBody ContractCreateRequest request
+            @Valid @RequestBody ContractCreateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         return ResponseEntity.ok(contractService.createOrUpdateContract(memberId, reservationId, request));

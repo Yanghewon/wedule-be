@@ -1,4 +1,4 @@
-package com.wedule.wedule.member;
+package com.wedule.wedule.member.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,12 +1,23 @@
 package com.wedule.wedule.packages.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 // 패키지 생성 요청 DTO
 public class PackageCreateRequest {
 
+    @NotBlank(message = "패키지 이름은 필수입니다.")
     private String name;
+
+    @Positive(message = "가격은 0보다 커야 합니다.")
     private int price;
+
+    @NotBlank(message = "촬영 코스 안내는 필수입니다.")
     private String courseGuide;
+
     private String shootingTime;
+
+    @NotBlank(message = "구성 내용은 필수입니다.")
     private String composition;
 
     // Jackson이 JSON -> 객체 변환 시 필요

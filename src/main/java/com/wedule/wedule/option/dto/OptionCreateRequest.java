@@ -1,12 +1,18 @@
 package com.wedule.wedule.option.dto;
 
 import com.wedule.wedule.option.OptionType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 // 옵션 생성 요청 DTO
 public class OptionCreateRequest {
 
+    @NotBlank(message = "옵션 이름은 필수입니다.")
     private String name;
+
+    @NotNull(message = "옵션 종류를 선택해주세요.")
     private OptionType type;
+
     private int price;
 
     public OptionCreateRequest() {

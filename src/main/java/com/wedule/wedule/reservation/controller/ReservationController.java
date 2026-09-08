@@ -6,6 +6,7 @@ import com.wedule.wedule.reservation.dto.request.ReservationCreateRequest;
 import com.wedule.wedule.reservation.dto.response.ReservationCreateResponse;
 import com.wedule.wedule.reservation.dto.response.ReservationResponse;
 import com.wedule.wedule.reservation.dto.request.ReservationStatusUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<ReservationCreateResponse> createReservation(
             Authentication authentication,
-            @RequestBody ReservationCreateRequest request
+            @Valid @RequestBody ReservationCreateRequest request
     ) {
         // getPrincipal(): 인증 필터에서 등록할 때 넣었던 첫 번째 값(memberId)을 꺼냄
         Long memberId = (Long) authentication.getPrincipal();

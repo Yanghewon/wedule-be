@@ -1,5 +1,7 @@
-package com.wedule.wedule.member;
+package com.wedule.wedule.member.service;
 
+import com.wedule.wedule.member.entity.Member;
+import com.wedule.wedule.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

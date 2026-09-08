@@ -1,6 +1,6 @@
 package com.wedule.wedule.option.entity;
 
-import com.wedule.wedule.member.Member;
+import com.wedule.wedule.member.entity.Member;
 import com.wedule.wedule.option.OptionType;
 import jakarta.persistence.*;
 

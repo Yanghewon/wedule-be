@@ -1,8 +1,10 @@
-package com.wedule.wedule.member;
+package com.wedule.wedule.member.controller;
 
 import com.wedule.wedule.common.dto.MessageResponse;
+import com.wedule.wedule.member.service.MemberService;
 import com.wedule.wedule.member.dto.MemberSignUpRequest;
 import com.wedule.wedule.member.dto.MemberSignUpResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,7 @@ public class MemberController {
     // POST /api/members/signup
     // 요청 본문(JSON)을 MemberSignUpRequest로 받아서 회원가입 처리
     @PostMapping("/signup")
-    public ResponseEntity<MemberSignUpResponse> singUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
+    public ResponseEntity<MemberSignUpResponse> singUp(@Valid @RequestBody MemberSignUpRequest memberSignUpRequest) {
         Long memberId = memberService.signUp(
                 memberSignUpRequest.getEmail(),
                 memberSignUpRequest.getPassword(),

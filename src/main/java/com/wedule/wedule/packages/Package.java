@@ -1,6 +1,6 @@
 package com.wedule.wedule.packages;
 
-import com.wedule.wedule.member.Member;
+import com.wedule.wedule.member.entity.Member;
 import jakarta.persistence.*;
 
 // 촬영 패키지 엔티티 (STANDARD, PREMIUM 등)

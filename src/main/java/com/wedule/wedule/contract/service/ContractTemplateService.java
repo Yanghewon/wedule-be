@@ -4,8 +4,8 @@ import com.wedule.wedule.contract.dto.request.ContractTemplateRequest;
 import com.wedule.wedule.contract.dto.response.ContractTemplateResponse;
 import com.wedule.wedule.contract.entity.ContractTemplate;
 import com.wedule.wedule.contract.repository.ContractTemplateRepository;
-import com.wedule.wedule.member.Member;
-import com.wedule.wedule.member.MemberRepository;
+import com.wedule.wedule.member.entity.Member;
+import com.wedule.wedule.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,6 @@
 package com.wedule.wedule.reservation.entity;
 
-import com.wedule.wedule.member.Member;
+import com.wedule.wedule.member.entity.Member;
 import jakarta.persistence.*;
 
 // 작가가 직접 등록하는 커스텀 예약 항목의 "정의"

@@ -1,7 +1,7 @@
 package com.wedule.wedule.reservation.service;
 
-import com.wedule.wedule.member.Member;
-import com.wedule.wedule.member.MemberRepository;
+import com.wedule.wedule.member.entity.Member;
+import com.wedule.wedule.member.repository.MemberRepository;
 import com.wedule.wedule.option.entity.Option;
 import com.wedule.wedule.option.repository.OptionRepository;
 import com.wedule.wedule.packages.Package;

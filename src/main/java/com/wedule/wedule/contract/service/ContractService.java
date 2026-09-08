@@ -7,7 +7,7 @@ import com.wedule.wedule.contract.entity.Contract;
 import com.wedule.wedule.contract.entity.ContractTemplate;
 import com.wedule.wedule.contract.repository.ContractRepository;
 import com.wedule.wedule.contract.repository.ContractTemplateRepository;
-import com.wedule.wedule.member.Member;
+import com.wedule.wedule.member.entity.Member;
 import com.wedule.wedule.payment.repository.PaymentRepository;
 import com.wedule.wedule.reservation.entity.Reservation;
 import com.wedule.wedule.reservation.entity.ReservationOption;

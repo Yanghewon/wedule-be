@@ -3,6 +3,10 @@ package com.wedule.wedule.reservation.dto.request;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.wedule.wedule.reservation.dto.request.CustomFieldValueRequest;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 // 예약 생성 요청 DTO
@@ -10,12 +14,26 @@ import java.util.List;
 // Jackson이 이 필드들에 자동으로 값을 채워줌
 public class ReservationCreateRequest {
 
+    @NotNull(message = "촬영 패키지를 선택해주세요.")
     private Long packageId;
+
+    @NotBlank(message = "신랑 성함은 필수입니다.")
     private String groomName;
+
+    @NotBlank(message = "신부 성함은 필수입니다.")
     private String brideName;
+
+    @NotBlank(message = "연락처는 필수입니다.")
     private String phone;
+
+    @NotNull(message = "예식 날짜는 필수입니다.")
+    @Future(message = "예식 날짜는 오늘 이후여야 합니다.")
     private LocalDate weddingDate;
+
+    @NotNull(message = "예식 시간은 필수입니다.")
     private LocalTime weddingTime;
+
+    @NotBlank(message = "예식 장소는 필수입니다.")
     private String venueName;
     private List<Long> optionIds;
     private List<CustomFieldValueRequest> customFieldValues;

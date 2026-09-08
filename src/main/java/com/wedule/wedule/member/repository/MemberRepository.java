@@ -1,5 +1,6 @@
-package com.wedule.wedule.member;
+package com.wedule.wedule.member.repository;
 
+import com.wedule.wedule.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

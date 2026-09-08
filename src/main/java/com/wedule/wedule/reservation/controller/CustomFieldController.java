@@ -5,6 +5,7 @@ import com.wedule.wedule.reservation.dto.request.CustomFieldCreateRequest;
 import com.wedule.wedule.reservation.dto.request.CustomFieldUpdateRequest;
 import com.wedule.wedule.reservation.dto.response.CustomFieldResponse;
 import com.wedule.wedule.reservation.service.CustomFieldService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class CustomFieldController {
     @PostMapping
     public ResponseEntity<MessageResponse> createCustomField(
             Authentication authentication,
-            @RequestBody CustomFieldCreateRequest request
+            @Valid @RequestBody CustomFieldCreateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         customFieldService.createCustomField(memberId, request);
@@ -45,7 +46,7 @@ public class CustomFieldController {
     public ResponseEntity<MessageResponse> updateCustomField(
             Authentication authentication,
             @PathVariable Long id,
-            @RequestBody CustomFieldUpdateRequest request
+            @Valid @RequestBody CustomFieldUpdateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         customFieldService.updateCustomField(memberId, id, request);

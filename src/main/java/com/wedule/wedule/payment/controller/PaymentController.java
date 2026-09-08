@@ -5,6 +5,7 @@ import com.wedule.wedule.payment.dto.request.PaymentCreateRequest;
 import com.wedule.wedule.payment.dto.request.PaymentMarkPaidRequest;
 import com.wedule.wedule.payment.dto.response.PaymentSummaryResponse;
 import com.wedule.wedule.payment.service.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class PaymentController {
     public ResponseEntity<MessageResponse> createPayment(
             Authentication authentication,
             @PathVariable Long reservationId,
-            @RequestBody PaymentCreateRequest request
+            @Valid @RequestBody PaymentCreateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         paymentService.createPayment(memberId, reservationId, request);

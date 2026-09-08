@@ -5,6 +5,7 @@ import com.wedule.wedule.packages.dto.PackageCreateRequest;
 import com.wedule.wedule.packages.dto.PackageCreateResponse;
 import com.wedule.wedule.packages.dto.PackageResponse;
 import com.wedule.wedule.packages.dto.PackageUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class PackageController {
     @PostMapping
     public ResponseEntity<PackageCreateResponse> createPackage(
             Authentication authentication,
-            @RequestBody PackageCreateRequest request
+            @Valid @RequestBody PackageCreateRequest request
     ) {
         // 로그인한 회원 정보는 JWT 필터가 등록해둔 인증 정보에서 꺼내옴
 
@@ -57,7 +58,7 @@ public class PackageController {
     public ResponseEntity<MessageResponse> updatePackage(
             Authentication authentication,
             @PathVariable Long id,
-            @RequestBody PackageUpdateRequest request
+            @Valid @RequestBody PackageUpdateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         packageService.updatePackage(memberId, id, request);

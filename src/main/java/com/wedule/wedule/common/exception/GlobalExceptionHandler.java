@@ -4,6 +4,7 @@ import com.wedule.wedule.common.dto.MessageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 // 프로젝트 전체에서 발생하는 예외를 한 곳에서 가로채서 처리하는 클래스
 // @RestControllerAdvice: 모든 @RestController에서 던져진 예외를 이 클래스가 대신 받아서 처리하겠다는 선언
@@ -30,5 +31,16 @@ public class GlobalExceptionHandler {
         //  나중에 로그 관리를 다룰 때 정식 Logger로 교체할 예정)
         e.printStackTrace();
         return ResponseEntity.internalServerError().body(new MessageResponse("서버 오류가 발생했습니다."));
+    }
+
+    // Validation(@Valid) 검증에 실패했을 때 발생하는 예외를 처리
+    // 여러 필드가 동시에 검증 실패할 수 있으므로, 그중 첫 번째 에러 메시지를 응답에 담음
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<MessageResponse> handleValidationException(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .map(error -> error.getDefaultMessage())
+                .orElse("입력값이 올바르지 않습니다.");
+        return ResponseEntity.badRequest().body(new MessageResponse(message));
     }
 }

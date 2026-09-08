@@ -1,7 +1,9 @@
-package com.wedule.wedule.member;
+package com.wedule.wedule.member.controller;
 
+import com.wedule.wedule.member.service.AuthService;
 import com.wedule.wedule.member.dto.AuthLoginRequest;
 import com.wedule.wedule.member.dto.AuthLoginResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +22,7 @@ public class AuthController {
 
     // Post /api/auth/login
     @PostMapping("/login")
-    public ResponseEntity<AuthLoginResponse> login(@RequestBody  AuthLoginRequest request) {
+    public ResponseEntity<AuthLoginResponse> login(@Valid @RequestBody  AuthLoginRequest request) {
         String token = authService.login(request.getEmail(), request.getpassword());
         return ResponseEntity.ok(new AuthLoginResponse(token));
     }

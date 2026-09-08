@@ -6,6 +6,7 @@ import com.wedule.wedule.option.dto.OptionCreateRequest;
 import com.wedule.wedule.option.dto.OptionCreateResponse;
 import com.wedule.wedule.option.dto.OptionResponse;
 import com.wedule.wedule.option.dto.OptionUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class OptionController {
     @PostMapping
     public ResponseEntity<OptionCreateResponse> createOption(
             Authentication authentication,
-            @RequestBody OptionCreateRequest request
+            @Valid @RequestBody OptionCreateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         Long optionId = optionService.createOption(memberId, request);
@@ -46,7 +47,7 @@ public class OptionController {
     public ResponseEntity<MessageResponse> updateOption(
             Authentication authentication,
             @PathVariable Long id,
-            @RequestBody OptionUpdateRequest request
+            @Valid @RequestBody OptionUpdateRequest request
     ) {
         Long memberId = (Long) authentication.getPrincipal();
         optionService.updateOption(memberId, id, request);

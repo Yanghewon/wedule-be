@@ -1,6 +1,6 @@
 package com.wedule.wedule.contract.entity;
 
-import com.wedule.wedule.member.Member;
+import com.wedule.wedule.member.entity.Member;
 import jakarta.persistence.*;
 
 // 작가별로 하나씩 갖는 계약서 기본 템플릿(조항 내용)

@@ -2,7 +2,7 @@ package com.wedule.wedule.contract.dto.response;
 
 import com.wedule.wedule.contract.entity.Contract;
 import com.wedule.wedule.contract.entity.ContractStyle;
-import com.wedule.wedule.member.Member;
+import com.wedule.wedule.member.entity.Member;
 import com.wedule.wedule.reservation.entity.Reservation;
 
 import java.time.LocalDate;
