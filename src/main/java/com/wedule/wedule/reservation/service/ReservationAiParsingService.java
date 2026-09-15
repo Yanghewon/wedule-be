@@ -5,6 +5,8 @@ import com.wedule.wedule.reservation.dto.response.OpenAiChatResponse;
 import com.wedule.wedule.reservation.dto.response.ParsedCustomFieldResponse;
 import com.wedule.wedule.reservation.dto.response.ReservationParseResponse;
 import com.wedule.wedule.reservation.entity.CustomField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// 붙여넣은 예약 양식 텍스트를 OpenAI API로 분석해서, 구조화된 값으로 변환하는 서비스
 @Service
 public class ReservationAiParsingService {
+
+    // 이 클래스에서 발생하는 로그를 남기기 위한 Logger
+    private static final Logger log = LoggerFactory.getLogger(ReservationAiParsingService.class);
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
@@ -59,10 +65,15 @@ public class ReservationAiParsingService {
             String content = response.getChoices().get(0).getMessage().getContent();
             AiParseResponse aiResult = objectMapper.readValue(content, AiParseResponse.class);
 
+            log.info("AI 파싱 성공");
             return toResponse(aiResult, customFields);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // 외부 API 호출 실패는 우리 코드 버그가 아니라, 네트워크/API 키/크레딧 등
+            // 외부 요인일 가능성이 높아서, 원인 추적을 위해 전체 예외 정보를 남겨둠
+            // rawText는 고객 개인정보(이름, 연락처 등)를 포함할 수 있어, 앞 50자만 잘라서 기록
+            log.error("AI 파싱 실패 - rawText 일부: {}",
+                    rawText.substring(0, Math.min(rawText.length(), 50)), e);
             return new ReservationParseResponse();
         }
     }
@@ -75,27 +86,26 @@ public class ReservationAiParsingService {
                 + customFields.stream().map(CustomField::getLabel).collect(Collectors.joining(", "));
 
         return """
-            너는 웨딩 스냅 예약 양식 텍스트에서 정보를 추출하는 도우미야.
-            아래 항목을 찾아서 JSON으로만 응답해. 설명이나 다른 텍스트는 절대 포함하지 마.
+                너는 웨딩 스냅 예약 양식 텍스트에서 정보를 추출하는 도우미야.
+                아래 항목을 찾아서 JSON으로만 응답해. 설명이나 다른 텍스트는 절대 포함하지 마.
 
-            날짜 해석 규칙 (매우 중요):
-            - 한국에서 날짜는 "연.월.일" 또는 "연/월/일" 순서로 표기하는 것이 관례야.
-            - 예: "26.08.22"는 2026년 08월 22일을 의미해 (26년, 08월, 22일 순서).
-            - 예: "26/8/22"도 마찬가지로 2026년 8월 22일이야.
-            - 연도가 2자리(YY)면 반드시 20YY로 해석해 (26 -> 2026).
-            - 절대 일(day)과 연도를 헷갈리지 마. 항상 첫 번째 숫자가 연도야.
+                날짜 해석 규칙 (매우 중요):
+                - 한국에서 날짜는 "연.월.일" 또는 "연/월/일" 순서로 표기하는 것이 관례야.
+                - 예: "26.08.22"는 2026년 08월 22일을 의미해 (26년, 08월, 22일 순서).
+                - 연도가 2자리(YY)면 반드시 20YY로 해석해 (26 -> 2026).
+                - 절대 일(day)과 연도를 헷갈리지 마. 항상 첫 번째 숫자가 연도야.
 
-            {
-              "groomName": "신랑 이름 (없으면 null)",
-              "brideName": "신부 이름 (없으면 null)",
-              "phone": "연락처 (없으면 null)",
-              "weddingDate": "예식 날짜, yyyy-MM-dd 형식 (없으면 null)",
-              "weddingTime": "예식 시간, HH:mm 형식 (없으면 null)",
-              "venueName": "예식 장소 (없으면 null)",
-              "customFields": { "항목라벨": "인식된 값 (없으면 null)" }
-            }
+                {
+                  "groomName": "신랑 이름 (없으면 null)",
+                  "brideName": "신부 이름 (없으면 null)",
+                  "phone": "연락처 (없으면 null)",
+                  "weddingDate": "예식 날짜, yyyy-MM-dd 형식 (없으면 null)",
+                  "weddingTime": "예식 시간, HH:mm 형식 (없으면 null)",
+                  "venueName": "예식 장소 (없으면 null)",
+                  "customFields": { "항목라벨": "인식된 값 (없으면 null)" }
+                }
 
-            """ + customFieldSection;
+                """ + customFieldSection;
     }
 
     // AI가 응답한 원시 결과를, 실제 응답 형태(ReservationParseResponse)로 변환
@@ -113,8 +123,6 @@ public class ReservationAiParsingService {
             response.setWeddingTime(java.time.LocalTime.parse(aiResult.getWeddingTime()));
         }
 
-        // AI가 라벨(문자열) 기준으로 돌려준 커스텀 항목 값을,
-        // 실제 CustomField의 id와 매칭시켜서 프론트가 바로 쓸 수 있는 형태로 변환
         List<ParsedCustomFieldResponse> parsedCustomFields = new ArrayList<>();
         Map<String, String> aiCustomFields = aiResult.getCustomFields();
         if (aiCustomFields != null) {
