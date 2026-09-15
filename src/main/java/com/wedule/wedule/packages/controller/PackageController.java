@@ -1,10 +1,11 @@
-package com.wedule.wedule.packages;
+package com.wedule.wedule.packages.controller;
 
 import com.wedule.wedule.common.dto.MessageResponse;
 import com.wedule.wedule.packages.dto.PackageCreateRequest;
 import com.wedule.wedule.packages.dto.PackageCreateResponse;
 import com.wedule.wedule.packages.dto.PackageResponse;
 import com.wedule.wedule.packages.dto.PackageUpdateRequest;
+import com.wedule.wedule.packages.service.PackageService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

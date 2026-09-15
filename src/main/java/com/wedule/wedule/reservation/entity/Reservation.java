@@ -1,7 +1,7 @@
 package com.wedule.wedule.reservation.entity;
 
 import com.wedule.wedule.member.entity.Member;
-import com.wedule.wedule.packages.Package;
+import com.wedule.wedule.packages.entity.Package;
 import com.wedule.wedule.reservation.dto.ReservationStatus;
 import jakarta.persistence.*;
 

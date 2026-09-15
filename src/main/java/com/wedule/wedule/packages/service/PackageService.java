@@ -1,7 +1,9 @@
-package com.wedule.wedule.packages;
+package com.wedule.wedule.packages.service;
 
 import com.wedule.wedule.member.entity.Member;
 import com.wedule.wedule.member.repository.MemberRepository;
+import com.wedule.wedule.packages.entity.Package;
+import com.wedule.wedule.packages.repository.PackageRepository;
 import com.wedule.wedule.packages.dto.PackageCreateRequest;
 import com.wedule.wedule.packages.dto.PackageResponse;
 import com.wedule.wedule.packages.dto.PackageUpdateRequest;

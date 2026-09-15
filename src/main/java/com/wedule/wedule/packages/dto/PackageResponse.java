@@ -1,6 +1,6 @@
 package com.wedule.wedule.packages.dto;
 
-import com.wedule.wedule.packages.Package;
+import com.wedule.wedule.packages.entity.Package;
 
 // 패키지 조회 응답 DTO
 public class PackageResponse {
