@@ -100,4 +100,29 @@ public class ReservationCreateRequest {
         this.customFieldValues = customFieldValues;
     }
 
+    public String setGroomName(String groomName) {
+        return groomName;
+    }
+
+    public String setBrideName(String brideName) {
+        return brideName;
+    }
+
+    public String setPhone(String phone) {
+        return phone;
+    }
+
+    public LocalDate setWeddingDate(LocalDate weddingDate) {
+        return weddingDate;
+    }
+
+    public LocalTime setWeddingTime(LocalTime weddingTime) {
+        return weddingTime;
+    }
+
+    public String setVenueName(String venueName) {
+        return venueName;
+    }
+
+
 }
