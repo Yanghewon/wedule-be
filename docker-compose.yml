@@ -1,0 +1,33 @@
+services:
+  # MySQL 데이터베이스 컨테이너
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: wedule
+    ports:
+      - "3307:3306"   # 로컬 MySQL(3306)과 겹치지 않도록 3307로 열어둠
+    volumes:
+      - wedule-db-data:/var/lib/mysql   # 컨테이너를 껐다 켜도 데이터가 유지되게 함
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # 백엔드 애플리케이션 컨테이너
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/wedule
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy   # DB가 완전히 준비된 후에 앱이 시작되도록 순서를 강제함
+
+volumes:
+  wedule-db-data:
